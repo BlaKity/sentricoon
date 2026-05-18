@@ -1,0 +1,13 @@
+[project]
+name = "sentricoon"
+version = "0.0.1"
+description = "OS-Technician AI agent — semi-autonomous Windows PC repair (in development)"
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
