@@ -5,10 +5,16 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from sentricoon.tools.file_ops import FileDeleteTool, FileReadTool, FileWriteTool
 from sentricoon.tools.shell import ShellTool
 from sentricoon.tools.system import SystemInfoTool
+from sentricoon.tools.ubuntu_systemd import (
+    UbuntuSystemdFailedUnitsTool,
+    UbuntuSystemdRestartTool,
+    UbuntuSystemdStatusTool,
+)
 
 
 class TestShellTool(unittest.TestCase):
@@ -75,6 +81,71 @@ class TestSystemInfoTool(unittest.TestCase):
         self.assertTrue(r.success)
         for key in ("platform", "system", "python", "cwd"):
             self.assertIn(key, r.output)
+
+
+class TestUbuntuSystemdTools(unittest.TestCase):
+    @patch("sentricoon.tools.ubuntu_systemd.subprocess.run")
+    def test_failed_units_runs_narrow_systemctl_command(self, run):
+        run.return_value.returncode = 0
+        run.return_value.stdout = "0 loaded units listed.\n"
+        run.return_value.stderr = ""
+
+        r = UbuntuSystemdFailedUnitsTool().run({})
+
+        self.assertTrue(r.success, msg=r.error)
+        self.assertEqual(
+            run.call_args.args[0],
+            ["systemctl", "list-units", "--failed", "--no-pager", "--plain"],
+        )
+        self.assertIn("stdout", r.output)
+
+    @patch("sentricoon.tools.ubuntu_systemd.subprocess.run")
+    def test_status_requires_unit_and_runs_status(self, run):
+        missing = UbuntuSystemdStatusTool().run({})
+        self.assertFalse(missing.success)
+
+        run.return_value.returncode = 0
+        run.return_value.stdout = "Active: active (running)\n"
+        run.return_value.stderr = ""
+
+        r = UbuntuSystemdStatusTool().run({"unit": "ssh.service"})
+
+        self.assertTrue(r.success, msg=r.error)
+        self.assertEqual(
+            run.call_args.args[0],
+            ["systemctl", "status", "ssh.service", "--no-pager", "--plain"],
+        )
+
+    @patch("sentricoon.tools.ubuntu_systemd.subprocess.run")
+    def test_status_treats_failed_unit_as_successful_inspection(self, run):
+        run.return_value.returncode = 3
+        run.return_value.stdout = "Active: failed (Result: exit-code)\n"
+        run.return_value.stderr = ""
+
+        r = UbuntuSystemdStatusTool().run({"unit": "broken.service"})
+
+        self.assertTrue(r.success, msg=r.error)
+        self.assertEqual(r.extra["returncode"], 3)
+        self.assertIn("failed", r.output["stdout"])
+
+    @patch("sentricoon.tools.ubuntu_systemd.subprocess.run")
+    def test_restart_requires_unit_and_runs_restart(self, run):
+        missing = UbuntuSystemdRestartTool().run({})
+        self.assertFalse(missing.success)
+
+        run.return_value.returncode = 0
+        run.return_value.stdout = ""
+        run.return_value.stderr = ""
+
+        r = UbuntuSystemdRestartTool().run({"unit": "ssh.service"})
+
+        self.assertTrue(r.success, msg=r.error)
+        self.assertEqual(run.call_args.args[0], ["systemctl", "restart", "ssh.service"])
+
+    def test_restart_dry_run_describes_action(self):
+        d = UbuntuSystemdRestartTool().dry_run_describe({"unit": "ssh.service"})
+        self.assertEqual(d["action"], "ubuntu.systemd.restart")
+        self.assertEqual(d["would_run"], ["systemctl", "restart", "ssh.service"])
 
 
 if __name__ == "__main__":

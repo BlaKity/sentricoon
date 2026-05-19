@@ -340,6 +340,7 @@ class Planner:
     # ----- internals -----
 
     def _build_system_prompt(self, goal_class: str | None) -> str:
+        system = platform.system()
         sequences = self.memory.quarantined_action_sequences()
         if sequences:
             lines = ["Avoid these failed approaches (action sequences known to fail on this machine):"]
@@ -349,8 +350,8 @@ class Planner:
         else:
             quarantine_block = "No prior failed approaches recorded for this machine."
         return SYSTEM_PROMPT_TEMPLATE.format(
-            host_context=host_context_block(),
-            catalog=catalog_for_prompt(),
+            host_context=host_context_block(system=system),
+            catalog=catalog_for_prompt(system=system),
             goal_class=goal_class or "unspecified",
             quarantine_block=quarantine_block,
         )

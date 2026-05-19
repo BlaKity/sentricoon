@@ -119,8 +119,15 @@ class TestToolRouter(unittest.TestCase):
                 "shell.run", "file.read", "file.write", "file.delete",
                 "process.list", "process.kill", "system.info",
                 "app.open", "browser.open",
+                "ubuntu.systemd.failed_units", "ubuntu.systemd.status",
+                "ubuntu.systemd.restart",
             },
         )
+
+    def test_ubuntu_systemd_restart_requires_confirmation(self):
+        self.assertIn("ubuntu.systemd.restart", REQUIRES_CONFIRMATION)
+        with self.assertRaises(GuardError):
+            SafetyGuard().validate(Step(action="ubuntu.systemd.restart", args={"unit": "ssh.service"}))
 
 
 if __name__ == "__main__":

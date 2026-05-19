@@ -90,13 +90,51 @@ TOOL_CATALOG: Final[list[dict]] = [
         "risk": "low",
         "requires_confirmation": False,
     },
+    {
+        "name": "ubuntu.systemd.failed_units",
+        "supported_os": ["Linux"],
+        "description": (
+            "Ubuntu/Linux diagnostic: list failed systemd units using "
+            "`systemctl list-units --failed --no-pager --plain`. Prefer this "
+            "over shell.run for tasks asking about failed services."
+        ),
+        "args": {"timeout_s": "float, optional, default 15.0"},
+        "risk": "low",
+        "requires_confirmation": False,
+    },
+    {
+        "name": "ubuntu.systemd.status",
+        "supported_os": ["Linux"],
+        "description": (
+            "Ubuntu/Linux diagnostic: read the status of one systemd unit. "
+            "Use for service status checks before attempting a restart."
+        ),
+        "args": {"unit": "str — service/unit name, e.g. 'ssh.service'", "timeout_s": "float, optional"},
+        "risk": "low",
+        "requires_confirmation": False,
+    },
+    {
+        "name": "ubuntu.systemd.restart",
+        "supported_os": ["Linux"],
+        "description": (
+            "Ubuntu/Linux repair: restart one systemd unit. Diagnose first "
+            "with ubuntu.systemd.status or ubuntu.systemd.failed_units, then "
+            "verify with ubuntu.systemd.status after restart."
+        ),
+        "args": {"unit": "str — service/unit name, e.g. 'ssh.service'", "timeout_s": "float, optional"},
+        "risk": "high",
+        "requires_confirmation": True,
+    },
 ]
 
 
-def catalog_for_prompt() -> str:
+def catalog_for_prompt(system: str | None = None) -> str:
     """Markdown-ish catalog block for inclusion in the planner's system prompt."""
     lines: list[str] = []
     for entry in TOOL_CATALOG:
+        supported = entry.get("supported_os")
+        if system is not None and supported is not None and system not in supported:
+            continue
         lines.append(f"### {entry['name']}  (risk: {entry['risk']})")
         lines.append(entry["description"])
         if entry["args"]:

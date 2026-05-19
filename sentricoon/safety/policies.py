@@ -20,6 +20,9 @@ ACTION_ALLOWLIST: Final[frozenset[str]] = frozenset({
     "system.info",
     "app.open",
     "browser.open",
+    "ubuntu.systemd.failed_units",
+    "ubuntu.systemd.status",
+    "ubuntu.systemd.restart",
 })
 
 # Actions that require an explicit user confirmation token before execution.
@@ -28,4 +31,5 @@ REQUIRES_CONFIRMATION: Final[frozenset[str]] = frozenset({
     "shell.run",
     "file.delete",
     "process.kill",
+    "ubuntu.systemd.restart",
 })

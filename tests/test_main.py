@@ -116,6 +116,9 @@ class TestBuildToolRouter(unittest.TestCase):
         self.assertIn("file.write", names)
         self.assertIn("file.delete", names)
         self.assertIn("shell.run", names)
+        self.assertIn("ubuntu.systemd.failed_units", names)
+        self.assertIn("ubuntu.systemd.status", names)
+        self.assertIn("ubuntu.systemd.restart", names)
 
 
 # ============================================================================

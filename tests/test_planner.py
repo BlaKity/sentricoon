@@ -67,6 +67,14 @@ class TestToolCatalog(unittest.TestCase):
         for entry in TOOL_CATALOG:
             self.assertIn(entry["name"], text)
 
+    def test_catalog_filters_os_specific_actions(self):
+        windows = catalog_for_prompt(system="Windows")
+        self.assertNotIn("ubuntu.systemd.failed_units", windows)
+        self.assertNotIn("systemctl", windows)
+
+        linux = catalog_for_prompt(system="Linux")
+        self.assertIn("ubuntu.systemd.failed_units", linux)
+
 
 # ============================================================================
 # Plan parsing & validation

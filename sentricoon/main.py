@@ -35,6 +35,11 @@ from .tools.file_ops import FileDeleteTool, FileReadTool, FileWriteTool
 from .tools.process import ProcessKillTool, ProcessListTool
 from .tools.shell import ShellTool
 from .tools.system import SystemInfoTool
+from .tools.ubuntu_systemd import (
+    UbuntuSystemdFailedUnitsTool,
+    UbuntuSystemdRestartTool,
+    UbuntuSystemdStatusTool,
+)
 from .verifier import (
     HardVerifier,
     ObservationVerifier,
@@ -89,6 +94,9 @@ def build_tool_router() -> ToolRouter:
     r.register(FileWriteTool())
     r.register(FileDeleteTool())
     r.register(ShellTool())
+    r.register(UbuntuSystemdFailedUnitsTool())
+    r.register(UbuntuSystemdStatusTool())
+    r.register(UbuntuSystemdRestartTool())
     return r
 
 

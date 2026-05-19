@@ -228,6 +228,14 @@ uv run python -m sentricoon.main --help
 uv run python -m sentricoon.main --dry-run "show memory usage"
 ```
 
+Related docs:
+
+- [Project Direction](PROJECT_DIRECTION.md)
+- [Benchmarks](BENCHMARKS.md)
+- [Ubuntu Testing Guide](UBUNTU_TESTING.md)
+- [Ubuntu Plugin Plan](UBUNTU_PLUGIN_PLAN.md)
+- [Windows Testing Guide](WINDOWS_TESTING.md)
+
 ## Current Direction
 
 The near-term direction is to keep the runtime narrow and dependable:
