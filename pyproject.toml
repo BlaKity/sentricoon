@@ -1,7 +1,10 @@
 [project]
 name = "sentricoon"
 version = "0.0.1"
-description = "OS-Technician AI agent — semi-autonomous Windows PC repair (in development)"
+description = "Safety-first OS technician AI agent for Linux and Windows, starting with Ubuntu repair"
+readme = "README.md"
+license = "MIT"
+authors = [{name = "BlaKity"}]
 requires-python = ">=3.10"
 dependencies = []
 

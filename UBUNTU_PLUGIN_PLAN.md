@@ -1,6 +1,7 @@
 # Ubuntu Plugin Plan
 
-Sentricoon should become Ubuntu-first before expanding into Windows GUI repair.
+Sentricoon targets both Linux and Windows. Ubuntu should be the first
+developer-alpha platform before the Windows repair surface expands.
 
 The immediate goal is:
 

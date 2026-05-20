@@ -2,7 +2,8 @@
 
 ## Core Vision
 
-Sentricoon should become a **safe, plugin-powered OS technician agent**.
+Sentricoon should become a **safe, plugin-powered OS technician agent for Linux
+and Windows**.
 
 It should not become a general assistant, chatbot, AutoGPT clone, or broad
 computer-use agent. Its strongest identity is narrower:
@@ -110,9 +111,13 @@ Important rule:
 > Plugins may extend Sentricoon's tools, but they must never bypass
 > SafetyGuard, confirmation, dry-run, verification, or escalation.
 
-## Ubuntu-First Focus
+## Linux And Windows Target
 
-Ubuntu should be the first developer-alpha target.
+The long-term product target is both Linux and Windows. The project should not
+be framed as Ubuntu-only.
+
+Ubuntu should be the first developer-alpha target because it is the fastest path
+to a reliable repair loop.
 
 Why Ubuntu first:
 
@@ -148,10 +153,11 @@ ubuntu.apt
 support.bundle
 ```
 
-## Windows Later
+## Windows Track
 
-Windows is still a strong long-term opportunity, but it should come after the
-Ubuntu developer-alpha loop is stable.
+Windows is a first-class long-term target. The Windows track should expand after
+the Ubuntu developer-alpha loop is stable enough to reuse the same safety,
+verification, plugin, and escalation patterns.
 
 Good first Windows workflows later:
 

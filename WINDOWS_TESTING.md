@@ -3,7 +3,8 @@
 This guide explains what Sentricoon can do on Windows today and how to test it
 safely.
 
-Sentricoon is currently best used on Windows for:
+Windows is a long-term target for Sentricoon. While Ubuntu is the first active
+implementation focus, Sentricoon can currently be tested on Windows for:
 
 - safe diagnostics
 - dry-run repair planning
@@ -185,5 +186,6 @@ A technical user can clone it, run it with uv, test it on Windows/Linux,
 perform safe diagnostics, and understand every action it proposes.
 ```
 
-Windows testing is important, but Ubuntu is currently the first development
-target.
+Windows testing is important. Ubuntu is currently the first implementation
+target, but the same safety and verification model should carry into Windows
+support as it matures.

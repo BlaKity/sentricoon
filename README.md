@@ -5,8 +5,9 @@
 ![Tests](https://img.shields.io/badge/tests-unittest-brightgreen)
 ![Safety](https://img.shields.io/badge/safety-allowlist%20%2B%20confirmation-black)
 
-**A semi-autonomous OS technician agent for diagnosing, repairing, verifying,
-and safely escalating personal-computer problems.**
+**A safety-first OS technician agent for diagnosing, repairing, verifying,
+and escalating Linux and Windows system problems. Ubuntu is the first active
+development target.**
 
 - Plans OS-aware repair steps from a plain-language task.
 - Executes through a small, explicit tool allowlist.
@@ -45,8 +46,10 @@ and safely escalating personal-computer problems.**
 ```
 
 Sentricoon owns the **agent layer**: planning, routing, execution policy,
-verification, repair attempts, memory, and escalation. It does not try to be a
-general shell wrapper or an unrestricted automation framework.
+verification, repair attempts, memory, and escalation. The long-term target is
+Linux and Windows support; the current implementation focus is Ubuntu first so
+the repair loop can become reliable before the Windows surface expands. It does
+not try to be a general shell wrapper or an unrestricted automation framework.
 
 ## Why It Exists
 
@@ -61,8 +64,10 @@ intervention is needed.
 
 ## What It Is
 
-This repo is a Python runtime for an OS repair agent:
+This repo is a Python runtime for a Linux-and-Windows OS repair agent, with
+Ubuntu as the first active implementation target:
 
+- Ubuntu/Linux systemd diagnostics and service-repair primitives
 - cross-platform planning hints for Linux, Windows, and macOS
 - a native tool router for shell, files, processes, and system info
 - an allowlisted action catalog
@@ -121,6 +126,9 @@ file.delete
 shell.run
 app.open
 browser.open
+ubuntu.systemd.failed_units
+ubuntu.systemd.status
+ubuntu.systemd.restart
 ```
 
 ## Verification Stack
